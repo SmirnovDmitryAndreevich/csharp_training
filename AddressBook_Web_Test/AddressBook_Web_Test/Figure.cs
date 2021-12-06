@@ -10,7 +10,7 @@ namespace AddressBook_Web_Test
     {
         private bool colored = false;
 
-                public bool Colored
+        public bool Colored
         {
             get
             {
@@ -21,5 +21,5 @@ namespace AddressBook_Web_Test
                 colored = value;
             }
         }
-
+    }
 }
