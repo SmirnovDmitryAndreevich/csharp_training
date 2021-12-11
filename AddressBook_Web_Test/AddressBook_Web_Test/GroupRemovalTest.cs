@@ -3,18 +3,19 @@
 namespace AddressBook_Web_Test
 {
     [TestFixture]
-    public class GroupCreationTest : TestBase
+    public class GroupRemovalTests : TestBase
     {
         [Test]
-        public void GroupCrationTest()
+        public void GroupRemovalTest()
         {
             OpenHomePage();
             Login(new AccountData("admin","secret"));
             GoToGroupPage();
-            InitGroupCreation();
-            FillGroupForm(new GroupData("group 1", "1", "First Group"));
-            SubmitGroupCreation();
+            SelectGroup(1);
+            RemoveGroup();
             ReturnToGroupPage();
+            Logout();
         }
     }
 }
+
