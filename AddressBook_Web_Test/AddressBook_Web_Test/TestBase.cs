@@ -156,12 +156,7 @@ namespace AddressBook_Web_Test
             driver.FindElement(By.Name("delete")).Click();
         }
 
-        protected void ReturnToGroupPage()
-        {
-            driver.FindElement(By.LinkText("groups")).Click();
-        }
-
-        protected void GoBackToMainPage()
+        protected void GoToMainPage()
         {
             driver.FindElement(By.LinkText("home")).Click();
         }

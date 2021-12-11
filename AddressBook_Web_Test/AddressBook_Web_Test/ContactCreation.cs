@@ -12,7 +12,7 @@ namespace AddressBook_Web_Test
             Login(new AccountData("admin", "secret"));
             GoToContactPage();
             CreateContactInformation(new ContactData("Ivan", "Ivanov"));
-            GoBackToMainPage();
+            GoToMainPage();
             Logout();
         }
     }

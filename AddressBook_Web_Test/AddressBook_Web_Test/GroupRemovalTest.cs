@@ -13,7 +13,7 @@ namespace AddressBook_Web_Test
             GoToGroupPage();
             SelectGroup(1);
             RemoveGroup();
-            ReturnToGroupPage();
+            GoToGroupPage();
             Logout();
         }
     }

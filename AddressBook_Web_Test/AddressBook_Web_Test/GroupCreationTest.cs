@@ -14,7 +14,7 @@ namespace AddressBook_Web_Test
             InitGroupCreation();
             FillGroupForm(new GroupData("group 1", "1", "First Group"));
             SubmitGroupCreation();
-            ReturnToGroupPage();
+            GoToGroupPage();
         }
     }
 }
