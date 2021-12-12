@@ -18,10 +18,19 @@ namespace AddressBook_Web_Test
         {
             driver = new ChromeDriver();
             baseURL = "http://localhost/addressbook";
-            loginLogoutHelper = new LoginLogoutHelper(driver);
-            navigationHelper = new NavigationHelper(driver, baseURL);
-            groupHelper = new GroupHelper(driver);
-            contactHelper = new ContactHelper(driver);
+
+            loginLogoutHelper = new LoginLogoutHelper(this);
+            navigationHelper = new NavigationHelper(this, baseURL);
+            groupHelper = new GroupHelper(this);
+            contactHelper = new ContactHelper(this);
+        }
+
+        public IWebDriver Driver
+        {
+            get
+            {
+                return driver;
+            }
         }
 
         public void Stop()

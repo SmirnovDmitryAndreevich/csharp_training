@@ -5,11 +5,18 @@ namespace AddressBook_Web_Test
 {
     public class ContactHelper : HelperBase
     {
-        public ContactHelper(IWebDriver driver) 
-            : base(driver)
+        public ContactHelper(ApplicationManager manager) 
+            : base(manager)
         { 
         }
 
+        public ContactHelper Create(ContactData contact)
+        {
+            manager.Navigator.GoToContactPage();
+            CreateContactInformation(contact);
+            manager.Navigator.GoToMainPage();
+            return this;
+        }
         public void CreateContactInformation(ContactData name)
         {
             driver.FindElement(By.Name("firstname")).Click();
