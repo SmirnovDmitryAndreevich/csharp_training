@@ -1,13 +1,18 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Text.RegularExpressions;
 
 namespace AddressBook_Web_Test
 {
     public class ContactHelper : HelperBase
     {
-        public ContactHelper(ApplicationManager manager) 
-            : base(manager)
-        { 
+        private bool acceptNextAlert;
+
+        public ContactHelper(ApplicationManager manager, bool acceptNextAlert) : base(manager)
+        {
+            this.acceptNextAlert = acceptNextAlert;
         }
 
         public ContactHelper Create(ContactData contact)
@@ -17,6 +22,26 @@ namespace AddressBook_Web_Test
             manager.Navigator.GoToMainPage();
             return this;
         }
+
+        public ContactHelper Remove(int nubmerofindex, int p)
+        {
+            manager.Navigator.GoToMainPage();
+            SelectContactToRemove(p.ToString());
+            RemoveContacts(nubmerofindex);
+            manager.Navigator.GoToMainPage();
+            return this;
+        }
+
+        public ContactHelper Modify(ContactData name, int row)
+        {
+            manager.Navigator.GoToMainPage();
+            SelectContactToChange(row.ToString());
+            ModifyContact(name);
+            SubmitContactModify();
+            manager.Navigator.GoToMainPage();
+            return this;
+        }
+
         public void CreateContactInformation(ContactData name)
         {
             driver.FindElement(By.Name("firstname")).Click();
@@ -67,7 +92,7 @@ namespace AddressBook_Web_Test
             driver.FindElement(By.Name("byear")).Clear();
             driver.FindElement(By.Name("byear")).SendKeys("1864");
             driver.FindElement(By.Name("new_group")).Click();
-            new SelectElement(driver.FindElement(By.Name("new_group"))).SelectByText("group 1");
+            new SelectElement(driver.FindElement(By.Name("new_group"))).SelectByIndex(0);
             driver.FindElement(By.Name("address2")).Click();
             driver.FindElement(By.Name("address2")).Clear();
             driver.FindElement(By.Name("address2")).SendKeys("Nothing to say");
@@ -77,6 +102,62 @@ namespace AddressBook_Web_Test
             driver.FindElement(By.Name("notes")).Clear();
             driver.FindElement(By.Name("notes")).SendKeys("Hello world");
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+        }
+
+        public ContactHelper SubmitContactModify()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public ContactHelper ModifyContact(ContactData name)
+        {
+            driver.FindElement(By.Name("firstname")).Click();
+            driver.FindElement(By.Name("firstname")).Clear();
+            driver.FindElement(By.Name("firstname")).SendKeys(name.Firstname);
+            driver.FindElement(By.Name("middlename")).Clear();
+            driver.FindElement(By.Name("middlename")).SendKeys(name.Middlename);
+            return this;
+        }
+
+        public ContactHelper SelectContactToChange(string row)
+        {
+            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{row}]/td[8]/a/img")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContactToRemove(string p)
+        {
+            driver.FindElement(By.Id(p)).Click();
+            return this;
+        }
+
+        public ContactHelper RemoveContacts(int nubmerofindex)
+        {
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete " + nubmerofindex + " addresses[\\s\\S]$"));
+            return this;
+        }
+        private string CloseAlertAndGetItsText()
+        {
+            try
+            {
+                IAlert alert = driver.SwitchTo().Alert();
+                string alertText = alert.Text;
+                if (acceptNextAlert)
+                {
+                    alert.Accept();
+                }
+                else
+                {
+                    alert.Dismiss();
+                }
+                return alertText;
+            }
+            finally
+            {
+                acceptNextAlert = true;
+            }
         }
     }
 }

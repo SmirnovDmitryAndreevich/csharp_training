@@ -8,6 +8,7 @@ namespace AddressBook_Web_Test
     {
         protected IWebDriver driver;
         protected string baseURL;
+        protected bool acceptNextAlert;
 
         protected LoginLogoutHelper loginLogoutHelper;
         protected NavigationHelper navigationHelper;
@@ -18,11 +19,12 @@ namespace AddressBook_Web_Test
         {
             driver = new ChromeDriver();
             baseURL = "http://localhost/addressbook";
+            acceptNextAlert = true;
 
             loginLogoutHelper = new LoginLogoutHelper(this);
             navigationHelper = new NavigationHelper(this, baseURL);
             groupHelper = new GroupHelper(this);
-            contactHelper = new ContactHelper(this);
+            contactHelper = new ContactHelper(this, acceptNextAlert);
         }
 
         public IWebDriver Driver
