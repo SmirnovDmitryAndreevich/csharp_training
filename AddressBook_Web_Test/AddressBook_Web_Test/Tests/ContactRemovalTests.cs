@@ -8,7 +8,7 @@ namespace AddressBook_Web_Test.Tests
         [Test]
         public void ContactRemovalTest()
         {
-            application.Contacts.Remove(1,5);
+            application.Contacts.Remove(1,2);
             application.Auth.Logout();
         }
     }

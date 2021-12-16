@@ -23,10 +23,10 @@ namespace AddressBook_Web_Test
             return this;
         }
 
-        public ContactHelper Remove(int nubmerofindex, int p)
+        public ContactHelper Remove(int nubmerofindex, int row)
         {
             manager.Navigator.GoToMainPage();
-            SelectContactToRemove(p.ToString());
+            SelectContactToRemove(row.ToString());
             RemoveContacts(nubmerofindex);
             manager.Navigator.GoToMainPage();
             return this;
@@ -126,9 +126,9 @@ namespace AddressBook_Web_Test
             return this;
         }
 
-        public ContactHelper SelectContactToRemove(string p)
+        public ContactHelper SelectContactToRemove(string row)
         {
-            driver.FindElement(By.Id(p)).Click();
+            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{row}]/td")).Click();
             return this;
         }
 
