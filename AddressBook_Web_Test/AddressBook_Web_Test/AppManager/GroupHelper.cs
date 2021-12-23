@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 
 namespace AddressBook_Web_Test
 {
@@ -22,6 +23,11 @@ namespace AddressBook_Web_Test
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupPage();
+            if (! IfGroupExist())
+            {
+                GroupData newGroup = new GroupData("If empty group", null, null);
+                Create(newGroup);
+            }
             SelectGroup(p);
             InitGroupModification();
             FillGroupForm(newData);
@@ -33,6 +39,11 @@ namespace AddressBook_Web_Test
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupPage();
+            if (!IfGroupExist())
+            {
+                GroupData newGroup = new GroupData("If empty group", null, null);
+                Create(newGroup);
+            }
             SelectGroup(p);
             RemoveGroup();
             manager.Navigator.GoToGroupPage();
@@ -52,15 +63,9 @@ namespace AddressBook_Web_Test
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Click();
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
             return this;
         }
 
@@ -85,6 +90,18 @@ namespace AddressBook_Web_Test
         {
             driver.FindElement(By.Name("delete")).Click();
             return this;
+        }
+
+        public bool IfGroupExist()
+        {
+            if (IsElementPresent(By.Name("selected[]")))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -7,17 +7,10 @@ namespace AddressBook_Web_Test
         protected ApplicationManager application;
 
         [SetUp]
-        public void SetupTest()
+        public void SetupApplicationManager()
         {
-            application = new ApplicationManager();
-            application.Navigator.OpenHomePage();
+            application = ApplicationManager.GetInstance();
             application.Auth.Login(new AccountData("admin", "secret"));
-        }
-
-        [TearDown]
-        public void TeardownTest()
-        {
-            application.Stop();
         }
     }
 }

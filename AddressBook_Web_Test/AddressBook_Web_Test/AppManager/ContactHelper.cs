@@ -26,6 +26,11 @@ namespace AddressBook_Web_Test
         public ContactHelper Remove(int nubmerofindex, int row)
         {
             manager.Navigator.GoToMainPage();
+            if (! IfContactExist())
+            {
+                ContactData newcontact = new ContactData("Eric", "Cartman");
+                Create(newcontact);
+            }
             SelectContactToRemove(row.ToString());
             RemoveContacts(nubmerofindex);
             manager.Navigator.GoToMainPage();
@@ -35,6 +40,11 @@ namespace AddressBook_Web_Test
         public ContactHelper Modify(ContactData name, int row)
         {
             manager.Navigator.GoToMainPage();
+            if (! IfContactExist())
+            {
+                ContactData newcontact = new ContactData("Eric", "Cartman");
+                Create(newcontact);
+            }
             SelectContactToChange(row.ToString());
             ModifyContact(name);
             SubmitContactModify();
@@ -45,10 +55,8 @@ namespace AddressBook_Web_Test
         public void CreateContactInformation(ContactData name)
         {
             driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(name.Firstname);
-            driver.FindElement(By.Name("middlename")).Clear();
-            driver.FindElement(By.Name("middlename")).SendKeys(name.Middlename);
+            Type(By.Name("firstname"), name.Firstname);
+            Type(By.Name("middlename"), name.Middlename);
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys("Ivanovich");
             driver.FindElement(By.Name("nickname")).Clear();
@@ -113,10 +121,8 @@ namespace AddressBook_Web_Test
         public ContactHelper ModifyContact(ContactData name)
         {
             driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(name.Firstname);
-            driver.FindElement(By.Name("middlename")).Clear();
-            driver.FindElement(By.Name("middlename")).SendKeys(name.Middlename);
+            Type(By.Name("firstname"), name.Firstname);
+            Type(By.Name("middlename"), name.Middlename);
             return this;
         }
 
@@ -157,6 +163,18 @@ namespace AddressBook_Web_Test
             finally
             {
                 acceptNextAlert = true;
+            }
+        }
+
+        public bool IfContactExist()
+        {
+            if (IsElementPresent(By.Name("entry")))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
