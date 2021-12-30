@@ -8,7 +8,9 @@ namespace AddressBook_Web_Test
         [Test]
         public void GroupRemovalTest()
         {
-            application.Groups.Remove(1);
+            int indexToRemove = 4;
+            application.Groups.AddGroupIfNotPresent(indexToRemove);
+            application.Groups.Remove(indexToRemove);
             application.Auth.Logout();
         }
     }

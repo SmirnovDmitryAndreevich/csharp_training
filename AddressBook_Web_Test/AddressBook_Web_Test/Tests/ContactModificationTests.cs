@@ -10,7 +10,9 @@ namespace AddressBook_Web_Test
         {
             ContactData name = new ContactData("Petr", "Petrov");
 
-            application.Contacts.Modify(name,2);
+            int indexToModify = 3;
+            application.Contacts.AddContactIfNotPresent(indexToModify);
+            application.Contacts.Modify(name,indexToModify);
             application.Auth.Logout();
         }
     }

@@ -9,7 +9,10 @@ namespace AddressBook_Web_Test
         public void GroupModificationTest()
         {
             GroupData newData = new GroupData("New Group", null, "Change for Test");
-            application.Groups.Modify(1, newData);
+
+            int indexToModify = 4;
+            application.Groups.AddGroupIfNotPresent(indexToModify);
+            application.Groups.Modify(indexToModify, newData);
         }
     }
 }

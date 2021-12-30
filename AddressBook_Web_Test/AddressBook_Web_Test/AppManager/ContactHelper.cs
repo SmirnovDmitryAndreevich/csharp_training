@@ -26,11 +26,6 @@ namespace AddressBook_Web_Test
         public ContactHelper Remove(int nubmerofindex, int row)
         {
             manager.Navigator.GoToMainPage();
-            if (! IfContactExist())
-            {
-                ContactData newcontact = new ContactData("Eric", "Cartman");
-                Create(newcontact);
-            }
             SelectContactToRemove(row.ToString());
             RemoveContacts(nubmerofindex);
             manager.Navigator.GoToMainPage();
@@ -40,11 +35,6 @@ namespace AddressBook_Web_Test
         public ContactHelper Modify(ContactData name, int row)
         {
             manager.Navigator.GoToMainPage();
-            if (! IfContactExist())
-            {
-                ContactData newcontact = new ContactData("Eric", "Cartman");
-                Create(newcontact);
-            }
             SelectContactToChange(row.ToString());
             ModifyContact(name);
             SubmitContactModify();
@@ -166,15 +156,12 @@ namespace AddressBook_Web_Test
             }
         }
 
-        public bool IfContactExist()
+        public void AddContactIfNotPresent(int index)
         {
-            if (IsElementPresent(By.Name("entry")))
+            while (!IsElementPresent(By.XPath($"//table[@id='maintable']/tbody/tr[{index + 1}]/td")))
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                Create(new ContactData("Eric", "Cartman"));
+                manager.Navigator.GoToMainPage();
             }
         }
     }

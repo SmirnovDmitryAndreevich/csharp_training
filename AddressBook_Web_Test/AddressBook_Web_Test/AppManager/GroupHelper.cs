@@ -23,11 +23,6 @@ namespace AddressBook_Web_Test
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupPage();
-            if (! IfGroupExist())
-            {
-                GroupData newGroup = new GroupData("If empty group", null, null);
-                Create(newGroup);
-            }
             SelectGroup(p);
             InitGroupModification();
             FillGroupForm(newData);
@@ -39,11 +34,6 @@ namespace AddressBook_Web_Test
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupPage();
-            if (!IfGroupExist())
-            {
-                GroupData newGroup = new GroupData("If empty group", null, null);
-                Create(newGroup);
-            }
             SelectGroup(p);
             RemoveGroup();
             manager.Navigator.GoToGroupPage();
@@ -92,15 +82,11 @@ namespace AddressBook_Web_Test
             return this;
         }
 
-        public bool IfGroupExist()
+        public void AddGroupIfNotPresent(int index)
         {
-            if (IsElementPresent(By.Name("selected[]")))
+            while (!IsElementPresent(By.XPath($"//div[@id='content']/form/span[{index}]/input")))
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                Create(new GroupData(""));
             }
         }
     }
