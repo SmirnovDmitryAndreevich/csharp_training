@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace AddressBook_Web_Test
@@ -26,7 +27,7 @@ namespace AddressBook_Web_Test
         public ContactHelper Remove(int nubmerofindex, int row)
         {
             manager.Navigator.GoToMainPage();
-            SelectContactToRemove(row.ToString());
+            SelectContactToRemove(row);
             RemoveContacts(nubmerofindex);
             manager.Navigator.GoToMainPage();
             return this;
@@ -35,7 +36,7 @@ namespace AddressBook_Web_Test
         public ContactHelper Modify(ContactData name, int row)
         {
             manager.Navigator.GoToMainPage();
-            SelectContactToChange(row.ToString());
+            SelectContactToChange(row);
             ModifyContact(name);
             SubmitContactModify();
             manager.Navigator.GoToMainPage();
@@ -46,9 +47,9 @@ namespace AddressBook_Web_Test
         {
             driver.FindElement(By.Name("firstname")).Click();
             Type(By.Name("firstname"), name.Firstname);
-            Type(By.Name("middlename"), name.Middlename);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys("Ivanovich");
+            driver.FindElement(By.Name("middlename")).Clear();
+            driver.FindElement(By.Name("middlename")).SendKeys("Ivanovich");
+            Type(By.Name("lastname"), name.Lastname);
             driver.FindElement(By.Name("nickname")).Clear();
             driver.FindElement(By.Name("nickname")).SendKeys("Iva");
             driver.FindElement(By.Name("title")).Click();
@@ -100,11 +101,14 @@ namespace AddressBook_Web_Test
             driver.FindElement(By.Name("notes")).Clear();
             driver.FindElement(By.Name("notes")).SendKeys("Hello world");
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
+
+            contactCache = null;
         }
 
         public ContactHelper SubmitContactModify()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -112,26 +116,27 @@ namespace AddressBook_Web_Test
         {
             driver.FindElement(By.Name("firstname")).Click();
             Type(By.Name("firstname"), name.Firstname);
-            Type(By.Name("middlename"), name.Middlename);
+            Type(By.Name("lastname"), name.Lastname);
             return this;
         }
 
-        public ContactHelper SelectContactToChange(string row)
+        public ContactHelper SelectContactToChange(int row)
         {
-            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{row}]/td[8]/a/img")).Click();
+            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[" + (row+2) + "]/td[8]/a/img")).Click();
             return this;
         }
 
-        public ContactHelper SelectContactToRemove(string row)
+        public ContactHelper SelectContactToRemove(int row)
         {
-            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[{row}]/td")).Click();
+            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[" + (row+2) + "]/ td")).Click();
             return this;
         }
 
         public ContactHelper RemoveContacts(int nubmerofindex)
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
-            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete " + nubmerofindex + " addresses[\\s\\S]$"));
+            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete " + (nubmerofindex) + " addresses[\\s\\S]$"));
+            contactCache = null;
             return this;
         }
         private string CloseAlertAndGetItsText()
@@ -158,11 +163,36 @@ namespace AddressBook_Web_Test
 
         public void AddContactIfNotPresent(int index)
         {
-            while (!IsElementPresent(By.XPath($"//table[@id='maintable']/tbody/tr[{index + 1}]/td")))
+            while (!IsElementPresent(By.XPath("//tr[" + (index + 2) + "]/td/input")))
             {
                 Create(new ContactData("Eric", "Cartman"));
                 manager.Navigator.GoToMainPage();
             }
+        }
+
+        private List<ContactData> contactCache = null;
+
+        public List<ContactData> GetContactList()
+        {
+            manager.Navigator.GoToMainPage();
+            if (contactCache == null)
+            {
+                contactCache = new List<ContactData>();
+                manager.Navigator.GoToMainPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("[name='entry']"));
+                foreach (IWebElement element in elements)
+                {
+                    IList<IWebElement> row = element.FindElements(By.TagName("td"));
+                    contactCache.Add(new ContactData(row[2].Text, row[1].Text));
+                }
+            }
+            return new List<ContactData>(contactCache);
+        }
+
+        public int GetContactCount()
+        {
+            manager.Navigator.GoToMainPage();
+            return driver.FindElements(By.CssSelector("[name='entry']")).Count;
         }
     }
 }

@@ -1,39 +1,53 @@
-﻿namespace AddressBook_Web_Test
+﻿using System;
+
+namespace AddressBook_Web_Test
 {
-    public class ContactData
+    public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        private string firstname;
-        private string middlename;
-
-        public ContactData(string firstname, string middlename)
+        public ContactData(string firstname, string lastname)
         {
-            this.firstname = firstname;
-            this.middlename = middlename;
+            Firstname = firstname;
+            Lastname = lastname;
         }
 
-        public string Firstname
+        public bool Equals(ContactData other)
         {
-            get
+            if (object.ReferenceEquals(other, null))
             {
-                return firstname;
+                return false;
             }
-            set
+            if (object.ReferenceEquals(this, other))
             {
-                firstname = value;
+                return true;
             }
+            return (Firstname == other.Firstname) & (Lastname == other.Lastname);
         }
+
+        public override int GetHashCode()
+        {
+            return Firstname.GetHashCode() + Lastname.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return ("Firstname =" + Firstname + "," + "Lastname =" + Lastname);
+        }
+
+        public int CompareTo(ContactData other)
+        {
+            if (object.ReferenceEquals(other, null))
+            {
+                return 1;
+            }
+            string expected = $"{Lastname} {Firstname}";
+            string actual = $"{other.Lastname} {other.Firstname}";
+            return expected.CompareTo(actual);
+        }
+
+
+        public string Firstname { get; set; }
         
-        public string Middlename
-        {
-            get
-            {
-                return middlename;
-            }
-            set
-            {
-                middlename = value;
-            }
-        }
+        public string Lastname { get; set; }
     }
 }
 

@@ -13,6 +13,7 @@ namespace AddressBook_Web_Test
 
         protected LoginLogoutHelper loginLogoutHelper;
         protected NavigationHelper navigationHelper;
+
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
         private static ThreadLocal <ApplicationManager> application = new ThreadLocal<ApplicationManager>();
