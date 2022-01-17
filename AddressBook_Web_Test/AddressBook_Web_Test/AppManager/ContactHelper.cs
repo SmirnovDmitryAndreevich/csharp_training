@@ -194,5 +194,60 @@ namespace AddressBook_Web_Test
             manager.Navigator.GoToMainPage();
             return driver.FindElements(By.CssSelector("[name='entry']")).Count;
         }
+
+        public ContactData GetContactIformationFromTable(int row)
+        {
+            manager.Navigator.GoToMainPage();
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[row].FindElements(By.TagName("td"));
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string allEmails = cells[4].Text;
+            string allPhone = cells[5].Text;
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                AllPhones = allPhone,
+                AllEmails = allEmails
+            };
+
+        }
+
+        public ContactData GetContactIformationFromEditForm(int index)
+        {
+            manager.Navigator.GoToMainPage();
+            SelectContactToChange(0);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            string secondaryphone = driver.FindElement(By.Name("phone2")).GetAttribute("value");
+            string firstemail = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string secondemail = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string thirdemail = driver.FindElement(By.Name("email3")).GetAttribute("value");
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                HomePhone = homePhone,
+                MobilePhone = mobilePhone,
+                WorkPhone = workPhone,
+                SecondaryPhone = secondaryphone,
+                FirstEmail = firstemail,
+                SecondEmail = secondemail,
+                ThirdEmail = thirdemail
+            };
+        }
+
+        public int GetNumberOfSearchResults()
+        {
+            manager.Navigator.GoToMainPage();
+            string text = driver.FindElement(By.TagName("label")).Text;
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value);
+        }
     }
 }
