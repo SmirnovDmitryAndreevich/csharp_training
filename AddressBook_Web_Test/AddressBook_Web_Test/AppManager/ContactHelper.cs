@@ -195,7 +195,7 @@ namespace AddressBook_Web_Test
             return driver.FindElements(By.CssSelector("[name='entry']")).Count;
         }
 
-        public ContactData GetContactIformationFromTable(int row)
+        public ContactData GetContactInformationFromTable(int row)
         {
             manager.Navigator.GoToMainPage();
             IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[row].FindElements(By.TagName("td"));
@@ -214,7 +214,37 @@ namespace AddressBook_Web_Test
 
         }
 
-        public ContactData GetContactIformationFromEditForm(int index)
+        public ContactData GetContactInformationFromIcon(int row)
+        {
+            manager.Navigator.GoToMainPage();
+            SelectPersonalDetails(row);
+
+            string[] info = driver.FindElement(By.CssSelector("div#content")).Text.Split('\r', '\n');
+            string[] allName = info[0].Split(' ');
+            string firstname = allName[0];
+            string lastname = allName[2];
+            string address = info[8];
+
+            string homePhone = Regex.Replace(info[12], @"[()H: -]", "");
+            string mobilePhone = Regex.Replace(info[14], @"[()M: -]", "");
+            string workPhone = Regex.Replace(info[16], @"[()W: -]", "");
+            string secondaryphone = Regex.Replace(info[40], @"[()P: -]", "");
+            string allPhone = $"{homePhone}\r\n{mobilePhone}\r\n{workPhone}\r\n{secondaryphone}";
+
+            string firstemail = info[20];
+            string sencondemail = info[22];
+            string thirdemail = info[24];
+            string allEmails = $"{firstemail}\r\n{sencondemail}\r\n{thirdemail}";
+
+            return new ContactData(firstname, lastname)
+            {
+                Address = address,
+                AllPhones = allPhone,
+                AllEmails = allEmails
+            };
+        }
+
+        public ContactData GetContactInformationFromEditForm(int index)
         {
             manager.Navigator.GoToMainPage();
             SelectContactToChange(0);
@@ -248,6 +278,12 @@ namespace AddressBook_Web_Test
             string text = driver.FindElement(By.TagName("label")).Text;
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
+        }
+
+        public ContactHelper SelectPersonalDetails(int row)
+        {
+            driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[" + (row + 2) + "]/td[7]/a/img")).Click();
+            return this;
         }
     }
 }
