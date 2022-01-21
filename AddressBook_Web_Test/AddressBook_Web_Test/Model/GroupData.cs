@@ -29,7 +29,7 @@ namespace AddressBook_Web_Test
 
         public override string ToString()
         {
-            return Name;
+            return $"Name: {Name}\n{ Footer}: { Footer}\n{ Header}: { Header}";
         }
 
         public int CompareTo(GroupData other)
