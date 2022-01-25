@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfGroupData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GroupData>
+    <Name>X</Name>
+    <Header>A</Header>
+    <Footer>H</Footer>
+  </GroupData>
+  <GroupData>
+    <Name>M</Name>
+    <Header>J</Header>
+    <Footer>P</Footer>
+  </GroupData>
+  <GroupData>
+    <Name>9</Name>
+    <Header>4</Header>
+    <Footer>E</Footer>
+  </GroupData>
+  <GroupData>
+    <Name>T</Name>
+    <Header>-</Header>
+    <Footer>@</Footer>
+  </GroupData>
+  <GroupData>
+    <Name>?</Name>
+    <Header>E</Header>
+    <Footer>&gt;</Footer>
+  </GroupData>
+</ArrayOfGroupData>
