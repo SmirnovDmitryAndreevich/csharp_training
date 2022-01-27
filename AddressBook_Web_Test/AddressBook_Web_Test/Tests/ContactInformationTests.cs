@@ -21,13 +21,9 @@ namespace AddressBook_Web_Test
         [Test]
         public void TestContactInformationIcon()
         {
-            ContactData fromIcon = application.Contacts.GetContactInformationFromIcon(0);
+            string fromIcon = application.Contacts.GetContactInformationFromIcon(0);
             ContactData fromForm = application.Contacts.GetContactInformationFromEditForm(0);
-
-            Assert.AreEqual(fromIcon, fromForm);
-            Assert.AreEqual(fromIcon.Address, fromForm.Address);
-            Assert.AreEqual(fromIcon.AllPhones, fromForm.AllPhones);
-            Assert.AreEqual(fromIcon.AllEmails, fromForm.AllEmails);
+            CollectionAssert.AreEqual(fromForm.AllData, fromIcon);
         }
     }
 }
