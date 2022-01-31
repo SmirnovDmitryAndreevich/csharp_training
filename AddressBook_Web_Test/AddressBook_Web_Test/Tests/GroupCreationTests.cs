@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Excel = Microsoft.Office.Interop.Excel;
+using System;
 
 namespace AddressBook_Web_Test
 {
     [TestFixture]
-    public class GroupCreationTest : AuthTestBase
+    public class GroupCreationTest : GroupTestBase
     {
         public static IEnumerable<GroupData> RandomGroupProvider()
         {
@@ -76,13 +77,13 @@ namespace AddressBook_Web_Test
         [Test, TestCaseSource("GroupDataFromExcelFile")]
         public void GroupCrationTest(GroupData group)
         {
-            List<GroupData> oldGroups = application.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
 
             application.Groups.Create(group);
 
             Assert.AreEqual(oldGroups.Count + 1, application.Groups.GetGroupCount());
 
-            List<GroupData> newGroups = application.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
@@ -93,17 +94,36 @@ namespace AddressBook_Web_Test
         public void BadGroupCrationTest()
         {
             GroupData group = new GroupData("a'a", "", "");
-            List<GroupData> oldGroups = application.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
 
             application.Groups.Create(group);
 
             Assert.AreEqual(oldGroups.Count + 1, application.Groups.GetGroupCount());
 
-            List<GroupData> newGroups = application.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
+        }
+
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            foreach (ContactData contact in GroupData.GetAll()[0].GetContacts())
+            {
+                System.Console.Out.WriteLine(contact.Deprecated);
+            }
+        }
+
+        [Test]
+        public void ContactsInGroup()
+        {
+            foreach (ContactData contact in GroupData.GetAll()[0].GetContacts())
+            {
+                System.Console.Out.WriteLine(contact);
+            }
         }
     }
 }

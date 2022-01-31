@@ -8,7 +8,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace AddressBook_Web_Test
 {
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
         public static IEnumerable<ContactData> RandomContactProvider()
         {
@@ -70,13 +70,13 @@ namespace AddressBook_Web_Test
         [Test, TestCaseSource("ContactDataFromExcelFile")]
         public void ContactCreationTest(ContactData contact)
         {
-            List<ContactData> oldContactList = application.Contacts.GetContactList();
+            List<ContactData> oldContactList = ContactData.GetAll();
 
             application.Contacts.Create(contact);
 
             Assert.AreEqual(oldContactList.Count + 1, application.Contacts.GetContactCount());
 
-            List<ContactData> newContactList = application.Contacts.GetContactList();
+            List<ContactData> newContactList = ContactData.GetAll();
             oldContactList.Add(contact);
             oldContactList.Sort();
             newContactList.Sort();

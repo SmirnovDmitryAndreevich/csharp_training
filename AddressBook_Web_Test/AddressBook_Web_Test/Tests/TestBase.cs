@@ -6,6 +6,7 @@ namespace AddressBook_Web_Test
 {
     public class TestBase
     {
+        public static bool PERFORM_LONG_UI_CHECKS = true;
         protected ApplicationManager application;
 
         [SetUp]

@@ -4,21 +4,21 @@ using System.Collections.Generic;
 namespace AddressBook_Web_Test
 {
     [TestFixture]
-    public class GroupRemovalTests : AuthTestBase
+    public class GroupRemovalTests : GroupTestBase
     {
         [Test]
         public void GroupRemovalTest()
         {
             int indexToRemove = 4;
             application.Groups.AddGroupIfNotPresent(indexToRemove);
-            List<GroupData> oldGroups = application.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
             GroupData toBeRemoved = oldGroups[indexToRemove];
 
-            application.Groups.Remove(indexToRemove);
+            application.Groups.Remove(toBeRemoved);
 
             Assert.AreEqual(oldGroups.Count - 1, application.Groups.GetGroupCount());
 
-            List<GroupData> newGroups = application.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
 
             oldGroups.RemoveAt(indexToRemove);
             Assert.AreEqual(oldGroups, newGroups);

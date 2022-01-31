@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace AddressBook_Web_Test
 {
     [TestFixture]
-    public class ContactInformationTests : AuthTestBase
+    public class ContactInformationTests : ContactTestBase
     {
         [Test]
         public void TestContactInformation()

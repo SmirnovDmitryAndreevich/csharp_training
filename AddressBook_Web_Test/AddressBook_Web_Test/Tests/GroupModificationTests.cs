@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace AddressBook_Web_Test
 {
     [TestFixture]
-    public class GroupModificationTests : AuthTestBase
+    public class GroupModificationTests : GroupTestBase
     {
         [Test]
         public void GroupModificationTest()
         {
             int indexToModify = 4;
             GroupData newData = new GroupData("New Group", null, "Change for Test");
-            List<GroupData> oldGroups = application.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
             GroupData oldData = oldGroups[indexToModify];
 
             application.Groups.AddGroupIfNotPresent(indexToModify);
@@ -19,7 +19,7 @@ namespace AddressBook_Web_Test
 
             Assert.AreEqual(oldGroups.Count, application.Groups.GetGroupCount());
 
-            List<GroupData> newGroups = application.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups[indexToModify].Name = newData.Name;
             oldGroups.Sort();
             newGroups.Sort();

@@ -24,6 +24,52 @@ namespace AddressBook_Web_Test
             return this;
         }
 
+        public void RemovingContactFromGroup(ContactData contact, string filterName)
+        {
+            manager.Navigator.GoToMainPage();
+            GroupFilter(filterName);
+            SelectContactToAddToGroup(contact.Id);
+            CommitToRemovingContactFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        public void CommitToRemovingContactFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+        }
+
+        public void AddContactToGroup(ContactData contact, GroupData group, string filtername)
+        {
+            manager.Navigator.GoToMainPage();
+            GroupFilter(filtername);
+            SelectContactToAddToGroup(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitToAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+        public void CommitToAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void SelectContactToAddToGroup(string contactId)
+        {
+            driver.FindElement(By.Id(contactId)).Click();
+        }
+
+        public   void GroupFilter(string filterName)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(filterName);
+        }
+
         public ContactHelper Remove(int nubmerofindex, int row)
         {
             manager.Navigator.GoToMainPage();
@@ -33,10 +79,29 @@ namespace AddressBook_Web_Test
             return this;
         }
 
+        internal ContactHelper Remove(int nubmerofindex, ContactData contact)
+        {
+            manager.Navigator.GoToMainPage();
+            SelectContactToRemove(contact.Id);
+            RemoveContacts(nubmerofindex);
+            manager.Navigator.GoToMainPage();
+            return this;
+        }
+
         public ContactHelper Modify(ContactData name, int row)
         {
             manager.Navigator.GoToMainPage();
             SelectContactToChange(row);
+            ModifyContact(name);
+            SubmitContactModify();
+            manager.Navigator.GoToMainPage();
+            return this;
+        }
+        
+        internal ContactHelper Modify(ContactData contact, ContactData name)
+        {
+            manager.Navigator.GoToMainPage();
+            SelectContactToChange(contact.Id);
             ModifyContact(name);
             SubmitContactModify();
             manager.Navigator.GoToMainPage();
@@ -126,9 +191,28 @@ namespace AddressBook_Web_Test
             return this;
         }
 
+        private ContactHelper SelectContactToChange(string id)
+        {
+            driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']")).FindElement(By.XPath("//img[@alt='Edit']")).Click();
+
+            return this;
+        }
+
         public ContactHelper SelectContactToRemove(int row)
         {
             driver.FindElement(By.XPath($"//table[@id='maintable']/tbody/tr[" + (row+2) + "]/ td")).Click();
+            return this;
+        }
+
+        private ContactHelper SelectContactToRemove(string id)
+        {
+            driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(string id)
+        {
+            driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']")).Click();
             return this;
         }
 

@@ -1,0 +1,14 @@
+﻿using LinqToDB.Mapping;
+
+namespace AddressBook_Web_Test
+{
+    [Table(Name = "address_in_groups")]
+    public class GroupContactRelation
+    {
+        [Column(Name = "group_id")]
+        public string GroupsId { get; set; }
+
+        [Column(Name = "id")]
+        public string ContactId { get; set; }
+    }
+}

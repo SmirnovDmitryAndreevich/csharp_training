@@ -1,8 +1,12 @@
-﻿using System;
+﻿using LinqToDB.Mapping;
+using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace AddressBook_Web_Test
 {
+    [Table (Name = "addressbook")]
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhones;
@@ -10,11 +14,6 @@ namespace AddressBook_Web_Test
         private string fullName;
         private string allData;
         private string fullNameNicknameBlock;
-        private string titleCompanyAdddrBlock;
-        private string phonesBlock;
-        private string emailHomePageBlock;
-        private string bdayAnniversaryBlock;
-        private string secondaryBlock;
 
         public ContactData()
         {
@@ -60,13 +59,15 @@ namespace AddressBook_Web_Test
             return expected.CompareTo(actual);
         }
 
-
+        [Column(Name = "firstname")]
         public string Firstname { get; set; }
 
         public string MiddleName { get; set; }
 
+        [Column(Name = "lastname")]
         public string Lastname { get; set; }
 
+        [Column(Name = "id"), PrimaryKey]
         public string Id { get; set; }
 
         public string Nickname { get; set; }
@@ -112,6 +113,9 @@ namespace AddressBook_Web_Test
         public string Phone2 { get; set; }
 
         public string Notes { get; set; }
+
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
 
         public string AllPhones
         {
@@ -748,6 +752,25 @@ namespace AddressBook_Web_Test
                 return "";
             }
             return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+        }
+
+        public static List<ContactData> GetAll()
+        {
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from c in db.Contacts.Where(x=>x.Deprecated == "0000-00-00 00:00:00") select c).ToList();
+            }
+        }
+
+        public List<GroupData> GetGroups()
+        {
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from g in db.Groups
+                        from gcr in db.GCR.Where(p => p.ContactId == Id && p.GroupsId == g.Id)
+                        select g).Distinct().ToList();
+            }
+
         }
     }
 }
