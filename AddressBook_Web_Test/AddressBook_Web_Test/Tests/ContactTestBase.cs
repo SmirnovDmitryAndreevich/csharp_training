@@ -11,7 +11,7 @@ namespace AddressBook_Web_Test
         {
             if (PERFORM_LONG_UI_CHECKS)
             {
-                List<ContactData> fromUI = app.Contacts.GetContactList();
+                List<ContactData> fromUI = application.Contacts.GetContactList();
                 List<ContactData> fromDB = ContactData.GetAll();
                 fromUI.Sort();
                 fromDB.Sort();

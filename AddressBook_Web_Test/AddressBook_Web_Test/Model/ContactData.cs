@@ -14,6 +14,11 @@ namespace AddressBook_Web_Test
         private string fullName;
         private string allData;
         private string fullNameNicknameBlock;
+        private string titleCompanyAdddrBlock;
+        private string phonesBlock;
+        private string emailHomePageBlock;
+        private string bdayAnniversaryBlock;
+        private string secondaryBlock;
 
         public ContactData()
         {
