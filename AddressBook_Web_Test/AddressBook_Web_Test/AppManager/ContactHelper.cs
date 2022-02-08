@@ -24,10 +24,10 @@ namespace AddressBook_Web_Test
             return this;
         }
 
-        public void RemovingContactFromGroup(ContactData contact, string filterName)
+        public void RemovingContactFromGroup(ContactData contact, GroupData group)
         {
             manager.Navigator.GoToMainPage();
-            GroupFilter(filterName);
+            SelectGroupInFilter(group.Name);
             SelectContactToAddToGroup(contact.Id);
             CommitToRemovingContactFromGroup();
             new WebDriverWait(driver, TimeSpan.FromSeconds(10))
@@ -37,6 +37,10 @@ namespace AddressBook_Web_Test
         public void CommitToRemovingContactFromGroup()
         {
             driver.FindElement(By.Name("remove")).Click();
+        }
+        private void SelectGroupInFilter(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
         }
 
         public void AddContactToGroup(ContactData contact, GroupData group, string filtername)
@@ -65,7 +69,7 @@ namespace AddressBook_Web_Test
             driver.FindElement(By.Id(contactId)).Click();
         }
 
-        public   void GroupFilter(string filterName)
+        public void GroupFilter(string filterName)
         {
             new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(filterName);
         }
@@ -79,7 +83,7 @@ namespace AddressBook_Web_Test
             return this;
         }
 
-        internal ContactHelper Remove(int nubmerofindex, ContactData contact)
+        public ContactHelper Remove(int nubmerofindex, ContactData contact)
         {
             manager.Navigator.GoToMainPage();
             SelectContactToRemove(contact.Id);

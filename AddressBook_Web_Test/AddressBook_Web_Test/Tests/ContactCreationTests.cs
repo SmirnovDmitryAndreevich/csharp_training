@@ -66,8 +66,7 @@ namespace AddressBook_Web_Test
             return contacts;
         }
 
-
-        [Test, TestCaseSource("ContactDataFromExcelFile")]
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactCreationTest(ContactData contact)
         {
             List<ContactData> oldContactList = ContactData.GetAll();
@@ -81,8 +80,6 @@ namespace AddressBook_Web_Test
             oldContactList.Sort();
             newContactList.Sort();
             Assert.AreEqual(oldContactList, newContactList);
-
-            application.Auth.Logout();
         }
     }
 }

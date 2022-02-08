@@ -13,7 +13,7 @@ namespace AddressBook_Web_Test
             string filterName = "[all]";
             GroupData group = GroupData.GetAll()[0];
             List<ContactData> oldList = group.GetContacts();
-            ContactData contact = ContactData.GetAll().Except(group.GetContacts()).First();
+            ContactData contact = ContactData.GetAll().Except(oldList).First();
 
             application.Contacts.AddContactToGroup(contact, group, filterName);
 

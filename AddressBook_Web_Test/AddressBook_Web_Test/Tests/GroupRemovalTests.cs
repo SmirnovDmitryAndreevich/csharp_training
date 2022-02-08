@@ -11,6 +11,7 @@ namespace AddressBook_Web_Test
         {
             int indexToRemove = 4;
             application.Groups.AddGroupIfNotPresent(indexToRemove);
+
             List<GroupData> oldGroups = GroupData.GetAll();
             GroupData toBeRemoved = oldGroups[indexToRemove];
 
@@ -19,7 +20,6 @@ namespace AddressBook_Web_Test
             Assert.AreEqual(oldGroups.Count - 1, application.Groups.GetGroupCount());
 
             List<GroupData> newGroups = GroupData.GetAll();
-
             oldGroups.RemoveAt(indexToRemove);
             Assert.AreEqual(oldGroups, newGroups);
 
@@ -27,8 +27,6 @@ namespace AddressBook_Web_Test
             {
                 Assert.AreNotEqual(group.Id, toBeRemoved.Id);
             }
-
-            application.Auth.Logout();
         }
     }
 }
