@@ -14,16 +14,18 @@ namespace AddressBook_Web_Test
             application.Contacts.AddContactIfNotPresent(indexToModify);
 
             List<ContactData> oldContactList = ContactData.GetAll();
-            ContactData oldContactData = oldContactList[indexToModify - 1];
+            ContactData oldContactData = oldContactList[indexToModify-1];
 
-            application.Contacts.Modify(name,indexToModify);
+            application.Contacts.Modify(oldContactData, name);
             Assert.AreEqual(oldContactList.Count, application.Contacts.GetContactCount());
 
             List<ContactData> newContactList = ContactData.GetAll();
             oldContactList[indexToModify-1].Firstname = name.Firstname;
             oldContactList[indexToModify-1].Lastname = name.Lastname;
+
             oldContactList.Sort();
             newContactList.Sort();
+                
             Assert.AreEqual(oldContactList, newContactList);
 
             foreach (var contact in newContactList)

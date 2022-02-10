@@ -6,9 +6,10 @@ namespace AddressBook_Web_Test
     public class GroupContactRelation
     {
         [Column(Name = "group_id")]
-        public string GroupsId { get; set; }
+        public string GroupId { get; }
 
         [Column(Name = "id")]
-        public string ContactId { get; set; }
+        public string ContactId { get; }
+
     }
 }

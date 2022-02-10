@@ -9,8 +9,8 @@ namespace AddressBook_Web_Test
         [Test]
         public void GroupModificationTest()
         {
-            int indexToModify = 4;
-            GroupData newData = new GroupData("New Group", null, "Change for Test");
+            int indexToModify = 3;
+            GroupData newData = new GroupData("New Group", "Test", "Change for Test");
             application.Groups.AddGroupIfNotPresent(indexToModify);
 
             List<GroupData> oldGroups = GroupData.GetAll();
@@ -22,11 +22,11 @@ namespace AddressBook_Web_Test
 
             List<GroupData> newGroups = GroupData.GetAll();
             oldGroups[indexToModify].Name = newData.Name;
-            oldGroups.Sort();
-            newGroups.Sort();
+            //oldGroups.Sort();
+            //newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
 
-            foreach (GroupData group in newGroups)
+            foreach (var group in newGroups)
             {
                 if (group.Id == oldGroupData.Id)
                 {

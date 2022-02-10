@@ -9,7 +9,7 @@ namespace AddressBook_Web_Test
         [Test]
         public void GroupRemovalTest()
         {
-            int indexToRemove = 4;
+            int indexToRemove = 1;
             application.Groups.AddGroupIfNotPresent(indexToRemove);
 
             List<GroupData> oldGroups = GroupData.GetAll();

@@ -76,6 +76,7 @@ namespace AddressBook_Web_Test
             Assert.AreEqual(oldContactList.Count + 1, application.Contacts.GetContactCount());
 
             List<ContactData> newContactList = ContactData.GetAll();
+            contact.Id = newContactList[newContactList.Count - 1].Id;
             oldContactList.Add(contact);
             oldContactList.Sort();
             newContactList.Sort();

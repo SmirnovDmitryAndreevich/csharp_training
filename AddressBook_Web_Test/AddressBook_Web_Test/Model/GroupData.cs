@@ -19,34 +19,37 @@ namespace AddressBook_Web_Test
         
         public bool Equals(GroupData other)
         {
-            if (object.ReferenceEquals(other, null))
+            if (Object.ReferenceEquals(other, null))
             {
                 return false;
             }
-            if (object.ReferenceEquals(this, other))
+            if (Object.ReferenceEquals(this, other))
             {
                 return true;
             }
-            return Name == other.Name;
+            return Name == other.Name && Id == other.Id;
         }
 
         public override int GetHashCode()
         {
             return Name.GetHashCode();
         }
-
         public override string ToString()
         {
-            return $"Name: {Name}\n{ Footer}: { Footer}\n{ Header}: { Header}";
+            return "name=" + Name + "\nheader= " + Header + "\nfooter= " + Footer;
         }
 
         public int CompareTo(GroupData other)
         {
-            if (object.ReferenceEquals(other, null))
+            if (Object.ReferenceEquals(other, null))
             {
                 return 1;
             }
-            return Name.CompareTo(other.Name);
+            if (this.Id != other.Id)
+            {
+                return Id.CompareTo(other.Id);
+            }
+            return 0;
         }
 
         public GroupData(string name, string header, string footer)
@@ -55,6 +58,7 @@ namespace AddressBook_Web_Test
             Header = header;
             Footer = footer;
         }
+
         [Column(Name="group_name")]
         public string Name { get; set; }
 
@@ -80,7 +84,7 @@ namespace AddressBook_Web_Test
             using (AddressbookDB db = new AddressbookDB())
             {
                 return (from c in db.Contacts
-                        from gcr in db.GCR.Where(p => p.GroupsId == Id && p.ContactId == c.Id && c.Deprecated == "0000-00-00 00:00:00") select c).Distinct().ToList();
+                        from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id && c.Deprecated == "0000-00-00 00:00:00") select c).Distinct().ToList();
             }
         }
     }

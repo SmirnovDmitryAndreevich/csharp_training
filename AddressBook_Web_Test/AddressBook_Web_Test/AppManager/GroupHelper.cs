@@ -63,7 +63,7 @@ namespace AddressBook_Web_Test
 
         public GroupHelper SelectGroup(string id)
         {
-            driver.FindElement(By.XPath("//input[@name='selected[]']) and @value='" + id + "'")).Click();
+            driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + id + "']")).Click();
             return this;
         }
 
@@ -114,9 +114,9 @@ namespace AddressBook_Web_Test
 
         public void AddGroupIfNotPresent(int index)
         {
-            while (!IsElementPresent(By.XPath($"//div[@id='content']/form/span[{index+1}]/input")))
+            while (!IsElementPresent(By.XPath($"//div[@id='content']/form/span[{index + 1}]/input")))
             {
-                Create(new GroupData(""));
+                Create(new GroupData("auto","",""));
             }
         }
 
@@ -132,9 +132,24 @@ namespace AddressBook_Web_Test
                 ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
                 foreach (IWebElement element in elements)
                 {
-                    groupCache.Add(new GroupData(element.Text) {
+                    groupCache.Add(new GroupData(null)
+                    {
                         Id = element.FindElement(By.TagName("input")).GetAttribute("value")
                     });
+                }
+                string allGroupNames = driver.FindElement(By.CssSelector("div#content form")).Text;
+                string[] parts = allGroupNames.Split('\n');
+                int shift = groupCache.Count - parts.Length;
+                for (int i = 0; i < groupCache.Count; i++)
+                {
+                    if (i < shift)
+                    {
+                        groupCache[i].Name = "";
+                    }
+                    else
+                    {
+                        groupCache[i].Name = parts[i - shift].Trim();
+                    }
                 }
             }
             return new List<GroupData>(groupCache);

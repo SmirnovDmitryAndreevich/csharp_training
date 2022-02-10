@@ -9,12 +9,12 @@ namespace AddressBook_Web_Test
         [Test]
         public void ContactRemovalTest()
         {
-            int indexToRemove = 2;
+            int indexToRemove = 1;
             application.Contacts.AddContactIfNotPresent(indexToRemove);
             List<ContactData> oldContactList = ContactData.GetAll();
-            ContactData contactToRemove = oldContactList[indexToRemove - 1];
+            ContactData contactToRemove = oldContactList[indexToRemove-1];
 
-            application.Contacts.Remove(1,contactToRemove);
+            application.Contacts.Remove(contactToRemove);
 
             Assert.AreEqual(oldContactList.Count - 1, application.Contacts.GetContactCount());
             oldContactList.Remove(contactToRemove);

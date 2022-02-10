@@ -20,50 +20,6 @@ namespace AddressBook_Web_Test
         private string bdayAnniversaryBlock;
         private string secondaryBlock;
 
-        public ContactData()
-        {
-        }
-
-        public ContactData(string firstname, string lastname)
-        {
-            Firstname = firstname;
-            Lastname = lastname;
-        }
-
-        public bool Equals(ContactData other)
-        {
-            if (object.ReferenceEquals(other, null))
-            {
-                return false;
-            }
-            if (object.ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            return (Firstname == other.Firstname) & (Lastname == other.Lastname);
-        }
-
-        public override int GetHashCode()
-        {
-            return Firstname.GetHashCode() + Lastname.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return ("Firstname =" + Firstname + "," + "Lastname =" + Lastname);
-        }
-
-        public int CompareTo(ContactData other)
-        {
-            if (object.ReferenceEquals(other, null))
-            {
-                return 1;
-            }
-            string expected = $"{Lastname} {Firstname}";
-            string actual = $"{other.Lastname} {other.Firstname}";
-            return expected.CompareTo(actual);
-        }
-
         [Column(Name = "firstname")]
         public string Firstname { get; set; }
 
@@ -121,6 +77,52 @@ namespace AddressBook_Web_Test
 
         [Column(Name = "deprecated")]
         public string Deprecated { get; set; }
+
+        public ContactData()
+        {
+        }
+
+        public ContactData(string firstname, string lastname)
+        {
+            Firstname = firstname;
+            Lastname = lastname;
+        }
+
+        public bool Equals(ContactData other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Firstname == other.Firstname && Lastname == other.Lastname && Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Firstname.GetHashCode() + Lastname.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "Firstname=" + Firstname + "\nMiddlename= " + MiddleName + "\nLastname= " + Lastname + "\nId= " + Id;
+        }
+
+        public int CompareTo(ContactData other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return 1;
+            }
+            if (this.Id != other.Id)
+            {
+                return Id.CompareTo(other.Id);
+            }
+            return 0;
+        }
 
         public string AllPhones
         {
@@ -765,6 +767,17 @@ namespace AddressBook_Web_Test
             {
                 return (from c in db.Contacts.Where(x=>x.Deprecated == "0000-00-00 00:00:00") select c).ToList();
             }
+        }
+
+        public List<GroupData> GetGroups()
+        {
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from g in db.Groups
+                        from gcr in db.GCR.Where(p => p.ContactId == Id && p.GroupId == g.Id)
+                        select g).Distinct().ToList();
+            }
+
         }
     }
 }

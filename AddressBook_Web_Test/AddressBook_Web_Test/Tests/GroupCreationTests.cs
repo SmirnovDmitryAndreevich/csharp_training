@@ -84,9 +84,8 @@ namespace AddressBook_Web_Test
             Assert.AreEqual(oldGroups.Count + 1, application.Groups.GetGroupCount());
 
             List<GroupData> newGroups = GroupData.GetAll();
+            group.Id = newGroups[newGroups.Count - 1].Id;
             oldGroups.Add(group);
-            oldGroups.Sort();
-            newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
         }
 
