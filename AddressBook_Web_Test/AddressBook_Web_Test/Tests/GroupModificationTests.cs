@@ -9,24 +9,23 @@ namespace AddressBook_Web_Test
         [Test]
         public void GroupModificationTest()
         {
-            int indexToModify = 3;
             GroupData newData = new GroupData("New Group", "Test", "Change for Test");
-            application.Groups.AddGroupIfNotPresent(indexToModify);
+            application.Groups.AddGroupIfNotPresent();
 
             List<GroupData> oldGroups = GroupData.GetAll();
-            GroupData oldGroupData = oldGroups[indexToModify-1];
+            GroupData oldGroupData = oldGroups[0];
 
             application.Groups.Modify(oldGroupData, newData);
 
             Assert.AreEqual(oldGroups.Count, application.Groups.GetGroupCount());
 
             List<GroupData> newGroups = GroupData.GetAll();
-            oldGroups[indexToModify].Name = newData.Name;
-            //oldGroups.Sort();
-            //newGroups.Sort();
+            oldGroups[0].Name = newData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
 
-            foreach (var group in newGroups)
+            foreach (GroupData group in newGroups)
             {
                 if (group.Id == oldGroupData.Id)
                 {

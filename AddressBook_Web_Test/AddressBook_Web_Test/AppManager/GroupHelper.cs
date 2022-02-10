@@ -112,12 +112,15 @@ namespace AddressBook_Web_Test
             return this;
         }
 
-        public void AddGroupIfNotPresent(int index)
+        public GroupHelper AddGroupIfNotPresent()
         {
-            while (!IsElementPresent(By.XPath($"//div[@id='content']/form/span[{index + 1}]/input")))
+            manager.Navigator.GoToGroupPage();
+            if (!IsElementPresent(By.CssSelector("span.group")))
             {
-                Create(new GroupData("auto","",""));
+                GroupData group = (new GroupData("auto","auto","auto"));
+                Create(group);
             }
+            return this;
         }
 
 

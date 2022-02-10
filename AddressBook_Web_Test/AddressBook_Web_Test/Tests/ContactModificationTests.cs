@@ -11,7 +11,7 @@ namespace AddressBook_Web_Test
         {
             int indexToModify = 1;
             ContactData name = new ContactData("Petr", "Petrov");
-            application.Contacts.AddContactIfNotPresent(indexToModify);
+            application.Contacts.AddContactIfNotPresent();
 
             List<ContactData> oldContactList = ContactData.GetAll();
             ContactData oldContactData = oldContactList[indexToModify-1];

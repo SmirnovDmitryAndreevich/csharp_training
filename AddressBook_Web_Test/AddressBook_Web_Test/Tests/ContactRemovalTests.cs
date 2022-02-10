@@ -10,7 +10,7 @@ namespace AddressBook_Web_Test
         public void ContactRemovalTest()
         {
             int indexToRemove = 1;
-            application.Contacts.AddContactIfNotPresent(indexToRemove);
+            application.Contacts.AddContactIfNotPresent();
             List<ContactData> oldContactList = ContactData.GetAll();
             ContactData contactToRemove = oldContactList[indexToRemove-1];
 

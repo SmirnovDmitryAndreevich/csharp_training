@@ -301,13 +301,14 @@ namespace AddressBook_Web_Test
             }
         }
 
-        public void AddContactIfNotPresent(int index)
+        public ContactHelper AddContactIfNotPresent()
         {
-            while (!IsElementPresent(By.XPath("//tr[" + (index + 2) + "]/td/input")))
+            if (!IsElementPresent(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img")))
             {
-                Create(new ContactData("Eric", "Cartman"));
-                manager.Navigator.GoToMainPage();
+                ContactData contact = (new ContactData("Auto", "Auto"));
+                Create(contact);
             }
+            return this;
         }
 
         private List<ContactData> contactCache = null;

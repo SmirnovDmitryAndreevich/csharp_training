@@ -9,18 +9,17 @@ namespace AddressBook_Web_Test
         [Test]
         public void GroupRemovalTest()
         {
-            int indexToRemove = 1;
-            application.Groups.AddGroupIfNotPresent(indexToRemove);
+            application.Groups.AddGroupIfNotPresent();
 
             List<GroupData> oldGroups = GroupData.GetAll();
-            GroupData toBeRemoved = oldGroups[indexToRemove];
+            GroupData toBeRemoved = oldGroups[0];
 
             application.Groups.Remove(toBeRemoved);
 
             Assert.AreEqual(oldGroups.Count - 1, application.Groups.GetGroupCount());
 
             List<GroupData> newGroups = GroupData.GetAll();
-            oldGroups.RemoveAt(indexToRemove);
+            oldGroups.RemoveAt(0);
             Assert.AreEqual(oldGroups, newGroups);
 
             foreach (GroupData group in newGroups)
